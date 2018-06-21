@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'securerandom'
+
 module SynchronizedModel
   class Message
     include Support
