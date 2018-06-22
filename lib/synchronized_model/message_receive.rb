@@ -4,7 +4,7 @@ module SynchronizedModel
     attr_reader :message
 
     def initialize(message)
-      @message = message
+      @message = Hash[message.map { |k, v| [k.to_sym, v] }]
     end
 
     def call

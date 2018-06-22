@@ -4,8 +4,6 @@ require 'spec_helper'
 RSpec.describe SynchronizedModel::MessageReceive do
   class TestModel
     include SynchronizedModel::PublishMixin
-    include SynchronizedModel::ReceiveMixin
-    synchronized_model_receive
 
     def attributes
       {}
@@ -49,7 +47,13 @@ RSpec.describe SynchronizedModel::MessageReceive do
     let(:mock_message_model) { double }
 
     before do
-      SynchronizedModel.logger = logger_mock
+      SynchronizedModel.configure do |config|
+        config.logger = logger_mock
+        config.receive_resource_classes =
+          {
+            'test_model': TestModel
+          }
+      end
       allow(mock_message_model)
         .to receive(:model)
         .and_return(mock_model)

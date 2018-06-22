@@ -12,22 +12,19 @@ module SynchronizedModel
 
     def initialize(message)
       @resource = message[:resource]
-      @payload = message[:payload]
+      @payload = Hash[message[:payload].map { |k, v| [k.to_sym, v] }]
     end
 
     def model
       @model ||= resource_class.from_queue_payload(payload)
     end
 
-    def self.add_resource_class(klass)
-      underscored_name = underscore(klass.name).to_sym
-      resource_classes[underscored_name] = klass
-    end
-
     protected
 
     def resource_class
-      self.class.resource_classes.fetch(resource.to_sym, NullModel)
+      SynchronizedModel.receive_resource_classes.fetch(
+        resource.to_sym, NullModel
+      )
     end
 
     class NullModel

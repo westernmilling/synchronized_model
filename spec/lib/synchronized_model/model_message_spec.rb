@@ -7,8 +7,11 @@ RSpec.describe SynchronizedModel::ModelMessage do
       { title: payload[:title] }
     end
   end
+
+  let(:payload) { { 'title': 'Title' } }
+
   it 'can be initialized with a hash' do
-    msg = described_class.new(resource: 'test_class')
+    msg = described_class.new(resource: 'test_class', payload: payload)
     expect(msg.resource).to eql('test_class')
   end
 
@@ -22,7 +25,12 @@ RSpec.describe SynchronizedModel::ModelMessage do
     let(:payload) { { title: 'Title' } }
 
     before do
-      SynchronizedModel::ModelMessage.add_resource_class(TestClass)
+      SynchronizedModel.configure do |config|
+        config.receive_resource_classes =
+          {
+            'test_class': TestClass
+          }
+      end
     end
 
     subject { described_class.new(message_attributes) }
