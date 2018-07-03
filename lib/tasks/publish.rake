@@ -17,7 +17,8 @@ namespace :synchronized_model do
       # I'm thinking we make this an endpoint and load circuitry in with
       # a config endpoint
       # detail in readme
-      PublishModelService.new(model).call
+      SynchronizedModel::Publish.new(model).call
+      # PublishModelService.new(model).call
     end
   end
 end
