@@ -16,7 +16,7 @@ module SynchronizedModel
     # ```ruby
     # SynchronizedModel.configure do |config|
     #   config.logger = Logger.new(STDOUT)
-    #   config.publish_handler = proc do |error|
+    #   config.publish_handler = proc do |message|
     #     Circuitry.publish("wm-otto-models", message)
     #   end
     #   config.receive_resource_classes =
