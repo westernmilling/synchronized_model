@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'synchronized_model/version'
+require 'synchronized_model/railtie' if defined?(Rails)
 
 module SynchronizedModel
   autoload :MessageReceive, 'synchronized_model/message_receive'
@@ -19,6 +20,7 @@ module SynchronizedModel
     #       'item': Item,
     #       'location': Location
     #    }
+    #    config.publish = lambda -> { Circuitry.call }
     # end
     # ```
     def configure
