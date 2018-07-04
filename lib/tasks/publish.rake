@@ -13,12 +13,8 @@ namespace :synchronized_model do
         model.update(updated_at: Time.zone.now)
       end
       logger.info "Publishing UUID: #{model.try(:uuid)}, ID: #{model.id}"
-      # This is not necessarily available.
-      # I'm thinking we make this an endpoint and load circuitry in with
-      # a config endpoint
-      # detail in readme
+
       SynchronizedModel::Publish.new(model).call
-      # PublishModelService.new(model).call
     end
   end
 end
