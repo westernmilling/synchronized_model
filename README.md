@@ -22,7 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Seeding New Apps with Table data
+- Run `rake synchronized_model:publish[ClassName]`
+
+### Resyncing for an added column
+- Run `rake synchronized_model:publish[ClassName, true]`
+- It will touch each record ensuring it's updated in the receivers and not ignored
+as a duplicate
+
 
 ## Development
 
