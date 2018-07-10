@@ -100,11 +100,8 @@ RSpec.describe SynchronizedModel::MessageReceive do
     context "the model isn't configured" do
       let(:updated_at_was) { nil }
       let(:updated_at) { nil }
-      let(:expected_log_message) do
-        'message'
-      end
       let(:logger_spy) { spy }
-      let(:mock_model) { spy }
+      let(:mock_model) { nil }
 
       before do
         allow(SynchronizedModel)
@@ -114,15 +111,13 @@ RSpec.describe SynchronizedModel::MessageReceive do
           .to receive(:info)
       end
 
-      it 'does not call save and logs that the model was not configured' do
+      it 'logs that the model was not configured' do
         subject
 
-        expect(mock_model).to_not have_received(:save!)
         expect(SynchronizedModel)
           .to have_received(:logger)
         expect(logger_spy)
           .to have_received(:info)
-          .with(expected_log_message)
       end
     end
   end
