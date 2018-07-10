@@ -96,5 +96,34 @@ RSpec.describe SynchronizedModel::MessageReceive do
         expect(mock_model).to_not have_received(:save!)
       end
     end
+
+    context "the model isn't configured" do
+      let(:updated_at_was) { nil }
+      let(:updated_at) { nil }
+      let(:expected_log_message) do
+        "Skipped Message ID: #{message[:id]}. " \
+        "No #{message[:resource]} model configured with SynchronizedModel"
+      end
+      let(:logger_spy) { spy }
+      let(:mock_model) { nil }
+
+      before do
+        allow(SynchronizedModel)
+          .to receive(:logger)
+          .and_return(logger_spy)
+        allow(logger_spy)
+          .to receive(:info)
+      end
+
+      it 'logs that the model was not configured' do
+        subject
+
+        expect(SynchronizedModel)
+          .to have_received(:logger)
+        expect(logger_spy)
+          .to have_received(:info)
+          .with(expected_log_message)
+      end
+    end
   end
 end
