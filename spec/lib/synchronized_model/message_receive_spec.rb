@@ -100,6 +100,10 @@ RSpec.describe SynchronizedModel::MessageReceive do
     context "the model isn't configured" do
       let(:updated_at_was) { nil }
       let(:updated_at) { nil }
+      let(:expected_log_message) do
+        "Skipped Message ID: #{message[:id]}. " \
+        "No #{message[:resource]} model configured with SynchronizedModel"
+      end
       let(:logger_spy) { spy }
       let(:mock_model) { nil }
 
@@ -118,6 +122,7 @@ RSpec.describe SynchronizedModel::MessageReceive do
           .to have_received(:logger)
         expect(logger_spy)
           .to have_received(:info)
+          .with(expected_log_message)
       end
     end
   end
