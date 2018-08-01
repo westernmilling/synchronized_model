@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SynchronizedModel
   class MessageReceive
     attr_reader :message

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :synchronized_model do
   desc 'Publish all records for a model'
   task :publish,
