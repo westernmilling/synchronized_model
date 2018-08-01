@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SynchronizedModel
   module Support
     # Taken from ActiveSupport:Inflector.underscore
