@@ -47,6 +47,9 @@ RSpec.describe SynchronizedModel::MessageReceive do
       allow(model).to receive(:column_change).and_return(
         [updated_at_was, updated_at]
       )
+      allow(model).to receive(:additional_message_attributes).and_return(
+        {additional_key: 'Test message'}
+      )
       model
     end
 
