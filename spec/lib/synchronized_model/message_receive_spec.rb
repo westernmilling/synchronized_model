@@ -21,6 +21,8 @@ RSpec.describe SynchronizedModel::MessageReceive do
     def save!; end
 
     def updated_at; nil; end
+
+    def updated_at=(_value); nil; end
   end
 
   describe '#call' do

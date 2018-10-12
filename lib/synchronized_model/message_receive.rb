@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 module SynchronizedModel
   class MessageReceive
     attr_reader :message
@@ -20,7 +21,7 @@ module SynchronizedModel
 
     def update_model
       if chronological_update?(model)
-        model.record_timestamps = false
+        model.updated_at = updated_dates[:was]
         model.save!
       else
         log_message = "Outdated message for #{model.class} " \
@@ -29,8 +30,17 @@ module SynchronizedModel
       end
     end
 
-    def chronological_update?(model)
-      !(model.updated_at_was && model.updated_at_was >= model.updated_at)
+    def chronological_update?(_model)
+      !(updated_dates[:was] && updated_dates[:was] >= updated_dates[:current])
+    end
+
+    def updated_dates
+      if model.respond_to? :updated_at_was
+        { was: model.updated_at_was, current: model.updated_at }
+      else
+        change = model.column_change(:updated_at)
+        { was: change[0], current: change[1] }
+      end
     end
 
     def model
