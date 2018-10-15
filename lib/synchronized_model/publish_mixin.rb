@@ -3,7 +3,11 @@
 module SynchronizedModel
   module PublishMixin
     def to_message_payload
-      attributes.merge(additional_message_attributes)
+      if defined? attributes
+        attributes.merge(additional_message_attributes)
+      else
+        values.merge(additional_message_attributes)
+      end
     end
 
     private

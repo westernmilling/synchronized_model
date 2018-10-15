@@ -27,6 +27,20 @@ RSpec.describe SynchronizedModel::PublishMixin do
     end
   end
 
+  class SequelTestClassWithAdditionalAttributes
+    include SynchronizedModel::PublishMixin
+
+    attr_accessor :values
+
+    def initialize(values)
+      @values = values
+    end
+
+    def additional_message_attributes
+      { title: 'Senior' }
+    end
+  end
+
   describe '#to_message_payload' do
     let(:expected_attributes) do
       { name: 'John Smith', visits: '12' }
@@ -51,6 +65,23 @@ RSpec.describe SynchronizedModel::PublishMixin do
 
       subject do
         TestClassWithAdditionalAttributes
+          .new(expected_attributes)
+          .to_message_payload
+      end
+
+      it 'returns attributes hash' do
+        expect(subject)
+          .to  eq(expected_attributes.merge(expected_additional_attributes))
+      end
+    end
+
+    context 'with additional attributes on a Sequel model' do
+      let(:expected_additional_attributes) do
+        { title: 'Senior' }
+      end
+
+      subject do
+        SequelTestClassWithAdditionalAttributes
           .new(expected_attributes)
           .to_message_payload
       end
