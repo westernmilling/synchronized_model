@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    synchronized_model (0.3.1)
+    synchronized_model (0.3.3)
 
 GEM
   remote: https://rubygems.org/
@@ -69,4 +69,4 @@ DEPENDENCIES
   synchronized_model!
 
 BUNDLED WITH
-   1.16.1
+   1.16.3

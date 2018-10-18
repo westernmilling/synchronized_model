@@ -20,6 +20,8 @@ RSpec.describe SynchronizedModel::MessageReceive do
 
     def save!; end
 
+    def save; end
+
     def updated_at; nil; end
 
     def updated_at=(_value); nil; end
@@ -43,12 +45,13 @@ RSpec.describe SynchronizedModel::MessageReceive do
 
     let(:mock_model_sequel) do
       model = TestModel.new
-      allow(model).to receive(:save!)
+      allow(model).to receive(:save)
+      allow(model).to receive(:updated_at).and_return(updated_at)
       allow(model).to receive(:column_change).and_return(
         [updated_at_was, updated_at]
       )
       allow(model).to receive(:additional_message_attributes).and_return(
-        {additional_key: 'Test message'}
+        additional_key: 'Test message'
       )
       model
     end
@@ -83,13 +86,13 @@ RSpec.describe SynchronizedModel::MessageReceive do
       end
 
       context 'it\'s a chronological_update' do
-        let(:updated_at_was) { Time.now.to_i }
-        let(:updated_at) { Time.now.to_i + 100 }
+        let(:updated_at_was) { Time.now }
+        let(:updated_at) { (Time.now + 1) }
 
-        it 'calls save!' do
+        it 'calls save' do
           subject
 
-          expect(mock_model_sequel).to have_received(:save!)
+          expect(mock_model_sequel).to have_received(:save)
         end
       end
     end
