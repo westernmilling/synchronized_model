@@ -21,11 +21,18 @@ module SynchronizedModel
     def update_model
       if chronological_update?(model)
         model.updated_at = updated_dates[:was]
-        model.save!
+        active_record? ? model.save! : sequel_save
       else
         log_message = "Outdated message for #{model.class} " \
         "ID: #{model.id}"
         SynchronizedModel.logger.info(log_message)
+      end
+    end
+
+    def sequel_save
+      model.save
+      unless model.errors.empty?
+        fail "Load from queue failed -#{model.class} uuid #{model.uuid}"
       end
     end
 
@@ -34,12 +41,16 @@ module SynchronizedModel
     end
 
     def updated_dates
-      if model.respond_to? :updated_at_was
+      if active_record?
         { was: model.updated_at_was, current: model.updated_at }
       else
-        change = model.column_change(:updated_at)
+        change = model.column_change(:updated_at) || []
         { was: change[0], current: change[1] }
       end
+    end
+
+    def active_record?
+      model.respond_to? :updated_at_was
     end
 
     def model
