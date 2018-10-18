@@ -37,7 +37,7 @@ module SynchronizedModel
       if active_record?
         { was: model.updated_at_was, current: model.updated_at }
       else
-        change = model.column_change(:updated_at)
+        change = model.column_change(:updated_at) || []
         { was: change[0], current: change[1] }
       end
     end
