@@ -24,6 +24,10 @@ RSpec.describe SynchronizedModel::MessageReceive do
 
     def updated_at; nil; end
 
+    def uuid; nil; end
+
+    def errors; []; end
+
     def updated_at=(_value); nil; end
   end
 
@@ -53,6 +57,7 @@ RSpec.describe SynchronizedModel::MessageReceive do
       allow(model).to receive(:additional_message_attributes).and_return(
         additional_key: 'Test message'
       )
+      allow(model).to receive(:errors).and_return(errors)
       model
     end
 
@@ -88,11 +93,17 @@ RSpec.describe SynchronizedModel::MessageReceive do
       context 'it\'s a chronological_update' do
         let(:updated_at_was) { Time.now }
         let(:updated_at) { (Time.now + 1) }
+        let(:errors) { [] }
 
         it 'calls save' do
           subject
-
           expect(mock_model_sequel).to have_received(:save)
+        end
+
+        it 'raises an error if validations fail' do
+          errors << ['error']
+
+          expect { subject }.to raise_error(RuntimeError)
         end
       end
     end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 module SynchronizedModel
   class MessageReceive
     attr_reader :message
@@ -21,11 +22,18 @@ module SynchronizedModel
     def update_model
       if chronological_update?(model)
         model.updated_at = updated_dates[:was]
-        active_record? ? model.save! : model.save
+        active_record? ? model.save! : sequel_save
       else
         log_message = "Outdated message for #{model.class} " \
         "ID: #{model.id}"
         SynchronizedModel.logger.info(log_message)
+      end
+    end
+
+    def sequel_save
+      model.save
+      unless model.errors.empty?
+        fail "Load from queue failed -#{model.class} uuid #{model.uuid}"
       end
     end
 
