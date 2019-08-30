@@ -26,7 +26,7 @@ Or install it yourself as:
 - Run `rake synchronized_model:publish[ClassName]`
 
 ### Resyncing for an added column
-- Run `rake synchronized_model:publish[ClassName, true]`
+- Run `rake synchronized_model:publish[ClassName,true]`
 - It will touch each record ensuring it's updated in the receivers and not ignored
 as a duplicate
 
