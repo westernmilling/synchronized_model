@@ -106,23 +106,6 @@ RSpec.describe SynchronizedModel::MessageReceive do
           expect { subject }.to raise_error(RuntimeError)
         end
       end
-
-      context 'it\'s a create' do
-        let(:updated_at_was) { nil }
-        let(:updated_at) { (Time.now + 1) }
-        let(:errors) { [] }
-
-        it 'calls save' do
-          subject
-          expect(mock_model_sequel).to have_received(:save)
-        end
-
-        it 'raises an error if validations fail' do
-          errors << ['error']
-
-          expect { subject }.to raise_error(RuntimeError)
-        end
-      end
     end
 
     context 'with an ActiveRecord model' do
