@@ -20,7 +20,7 @@ module SynchronizedModel
 
     def update_model
       if chronological_update?(model)
-        model.updated_at = updated_dates[:was]
+        model.updated_at = updated_dates[:current]
         active_record? ? model.save! : sequel_save
       else
         log_message = "Outdated message for #{model.class} " \
@@ -45,7 +45,7 @@ module SynchronizedModel
         { was: model.updated_at_was, current: model.updated_at }
       else
         change = model.column_change(:updated_at) ||
-                 [model.updated_at, model.updated_at]
+                 [(model.updated_at - 1.day), model.updated_at]
         { was: change[0], current: change[1] }
       end
     end
