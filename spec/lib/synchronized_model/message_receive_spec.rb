@@ -98,6 +98,7 @@ RSpec.describe SynchronizedModel::MessageReceive do
         it 'calls save' do
           subject
           expect(mock_model_sequel).to have_received(:save)
+          expect(mock_model_sequel.updated_at).to eq(updated_at)
         end
 
         it 'raises an error if validations fail' do
