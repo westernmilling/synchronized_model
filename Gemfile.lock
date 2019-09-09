@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    synchronized_model (0.3.5)
+    synchronized_model (0.3.7)
 
 GEM
   remote: https://rubygems.org/
